@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+</style>
+</head>
+<body>
+
+    <main id="pages-admin">
+
+        <h1>Admin page</h1>
+
+            <section class="user-list">
+                <%@users.each do |user|%>
+                    <div class="card <%=user[:admin]%>">
+                        <h5>ID: <%=user[:id]%></h5>
+                        <h5>Email: <%=user[:email]%></h5>
+                        <h5>Admin: <%=user[:admin]%></h5>
+                        <h5>username: <%=user[:username]%></h5>
+                    </div>
+                <%end%>
+            </section>
+
+    </main>
+
+</body>
+</html>

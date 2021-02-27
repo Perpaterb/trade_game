@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+</style>
+</head>
+<body>
+
+    <main id="pages-my_holding">
+
+        <h1>My holdings</h1>
+
+            <section class="holding-list">
+                <%@holding.each do |hold|%>
+                    <%if current_user.id == hold[:owner_users_ID]%>
+                        <div class="card">
+                            <%if hold[:stock_code] == "AUD"%>
+                                <h5>$<%=hold[:quantity]%></h5>
+                            <%else%>                          
+                                <h5>stock: <%=hold[:stock_code]%></h5>
+                                <h5>quantity: <%=hold[:quantity]%></h5>
+                                <h5>asking: %<%=hold[:asking].to_f/10%></h5>
+                                <%= form_tag(change_asking_path) do %>
+                                    <div class="field">
+                                        
+                                        <%= text_field_tag(:asking) %>
+                                    </div>
+                                <% end %>
+                                <h5> </h5>
+                            <%end%>
+                        </div>
+                    <%end%>
+                <%end%>
+            </section>
+
+    </main>
+
+</body>
+</html>

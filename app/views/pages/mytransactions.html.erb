@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+</style>
+</head>
+<body>
+
+    <main id="pages-mytransactions">
+
+        <h1>My Transactions</h1>
+
+            <section class="transactions-list">
+                <%@transactions.each do |transac|%>
+                    <%if [transac[:sold_user_id], transac[:buying_user_id]].include? current_user.id%>
+                        <div class="card transactions">
+                            <h5>Sold buy: <%="#{@users.where(:id => transac[:sold_user_id]).first.username}"%> </h5>
+                            <h5>Sold to: <%="#{@users.where(:id => transac[:buying_user_id]).first.username}"%> </h5>
+                            <h5>Stock: <%=transac[:stock_code]%> </h5>
+                            <h5>Quantity: <%=transac[:quantity]%> </h5>
+                            <h5>Price per share: $<%=transac[:price_per_share].to_f/100%> </h5>
+                            <h5>total price: $<%=(transac[:price_per_share].to_f/100)*transac[:quantity]%> </h5>
+                            <h5>time: <%=transac[:created_at]%> </h5>
+                        </div>
+                    <%end%>
+                <%end%>
+            </section>
+
+    </main>
+
+</body>
+</html>
