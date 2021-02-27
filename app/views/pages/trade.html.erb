@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+</style>
+</head>
+<body>
+
+    <main id="pages-trade">
+
+        <h1>Trade</h1>
+
+            <section class="trade-list">
+                <%@holding.each do |trade|%>
+                    <%if current_user.id != trade[:owner_users_ID]%>
+                        <%if trade[:stock_code] != "AUD"%>
+                            <div class="card n<%=trade[:asking].round(-1)%>">
+                                <h5>Seller: <%="#{@users.where(:id => trade[:owner_users_ID]).first.username}"%> Stock: <%=trade[:stock_code]%> Quantity: <%=trade[:quantity]%> </h5>
+                                <%if trade[:asking] > 0%>
+                                    <h5>Asking for maket value +<%=trade[:asking].to_f/10%>%</h5>
+                                <%elsif trade[:asking] == 0%>
+                                    <h5>Asking for maket value</h5>
+                                <%else%>
+                                    <h5>Asking for maket value <%=trade[:asking].to_f/10%>%</h5>
+                                <%end%>
+                            </div>
+                        <%end%>
+                    <%end%>
+                <%end%>
+            </section>
+
+    </main>
+
+</body>
+</html>

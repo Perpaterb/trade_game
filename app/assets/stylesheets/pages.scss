@@ -1,3 +1,76 @@
 // Place all the styles related to the pages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+#pages-admin, #pages-my_holding, #pages-trade, #pages-mytransactions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h1{
+        color:rgb(98, 151, 155)
+    }
+    .user-list{
+        width:80%;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+    .trade-list{
+
+    }
+
+    .transactions-list{
+
+    }
+
+    
+    h5{
+        font-size: 1.25rem;
+        margin: 0.5rem;
+    }
+
+    .card {
+        flex: 1 0 200px;
+        background-color: white;
+        box-sizing: border-box;
+        margin: 1rem .25em;
+        border: 1px solid black;
+        border-radius: 10px;
+        transition: box-shadow 0.3s;
+    }
+
+    .true {
+        border-top:#e25822 solid 5px;
+
+    }
+    .false{
+        border-top:#1d6ee2  solid 5px;
+
+    }
+    .n50,.n40,.n30{
+        border-top:#ff0000  solid 5px;
+
+    }
+    .n20{
+        border-top:#7e0000  solid 5px;
+
+    }
+    .n10,.n0,.n-10{
+        border-top:#000000  solid 5px;
+
+    }
+    .n-20{
+        border-top:#008300  solid 5px;
+
+    }
+    .n-30,.n-40,.n-50{
+        border-top:#00ff00  solid 5px;
+
+    }
+    .transactions{
+        border-top:#c707ce  solid 5px;
+
+    }
+
+}

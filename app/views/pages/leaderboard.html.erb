@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+</style>
+</head>
+<body>
+
+    <main id="pages-leaderboard">
+
+        <h1>leaderboard</h1>
+
+            <section class="user-list">
+                <%@users.each do |user|%>
+                    <div class="card <%=user[:admin]%>">
+                        <h5>username: <%=user[:username]%></h5>
+                    </div>
+                <%end%>
+            </section>
+
+    </main>
+
+</body>
+</html>

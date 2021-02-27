@@ -10,25 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_26_123533) do
+ActiveRecord::Schema.define(version: 2021_02_26_225959) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "holdings", force: :cascade do |t|
-    t.integer "owner_users_ID"
-    t.string "stock_code"
-    t.integer "quantity"
-    t.integer "asking"
+    t.integer "owner_users_ID", null: false
+    t.string "stock_code", null: false
+    t.integer "quantity", null: false
+    t.integer "asking", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "transactions", force: :cascade do |t|
-    t.integer "sold_user_id"
-    t.integer "buying_user_id"
-    t.integer "quantity"
-    t.integer "price_per_share"
+    t.integer "sold_user_id", null: false
+    t.integer "buying_user_id", null: false
+    t.string "stock_code", null: false
+    t.integer "quantity", null: false
+    t.integer "price_per_share", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -47,6 +48,7 @@ ActiveRecord::Schema.define(version: 2021_02_26_123533) do
     t.string "startingstock2"
     t.string "startingstock3"
     t.string "startingstock4"
+    t.string "username", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
