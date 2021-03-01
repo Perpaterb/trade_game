@@ -10,14 +10,16 @@
     <main id="pages-my_holding">
 
         <h1>My holdings</h1>
+        <h2>message: <%= @message %></h2>
 
             <section class="holding-list">
+                <%cash = 0%>
                 <%@holding.each do |hold|%>
                     <%if current_user.id == hold[:owner_users_ID]%>
-                        <div class="card">
-                            <%if hold[:stock_code] == "AUD"%>
-                                <h5>$<%=hold[:quantity]%></h5>
-                            <%else%>                          
+                        <%if hold[:stock_code] == "AUD"%>
+                            <% cash = hold[:quantity]%>
+                        <%else%>
+                            <div class="card">                         
                                 <h5>stock: <%=hold[:stock_code]%></h5>
                                 <h5>quantity: <%=hold[:quantity]%></h5>
                                 <h5>asking: %<%=hold[:asking].to_f/10%></h5>
@@ -28,11 +30,15 @@
                                     </div>
                                 <% end %>
                                 <h5> </h5>
-                            <%end%>
-                        </div>
+                            </div>                      
+                        <%end%>
+
                     <%end%>
                 <%end%>
-            </section>
+                <div class="card">
+                    <h5>$<%=cash%></h5>
+                </div>                 
+        </section>
 
     </main>
 

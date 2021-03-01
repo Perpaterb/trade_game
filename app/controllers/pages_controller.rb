@@ -15,7 +15,8 @@ class PagesController < ApplicationController
   end
   
   def holding
-    @holding = Holding.all
+    Holding.combinesamesame(current_user.id)
+    @holding = Holding.all.order(:stock_code)
   end
   
   def trade
