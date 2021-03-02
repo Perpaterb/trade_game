@@ -10,7 +10,7 @@
     <main id="pages-my_holding">
 
         <h1>My holdings</h1>
-        <h2>message: <%= @message %></h2>
+        <h2><%= @holding_message %></h2>
 
             <section class="holding-list">
                 <%cash = 0%>
@@ -19,14 +19,23 @@
                         <%if hold[:stock_code] == "AUD"%>
                             <% cash = hold[:quantity]%>
                         <%else%>
-                            <div class="card">                         
-                                <h5>stock: <%=hold[:stock_code]%></h5>
-                                <h5>quantity: <%=hold[:quantity]%></h5>
-                                <h5>asking: %<%=hold[:asking].to_f/10%></h5>
-                                <%= form_tag(change_asking_path) do %>
+                            <div class="card">   
+                                <%ask = hold[:asking].to_f/10%>
+                                <h5>Stock: <%=hold[:stock_code]%></h5>
+                                <h5>Quantity: <%=hold[:quantity]%></h5>
+                                <h5>Asking: %<%=ask%></h5>
+                                <%= form_for(hold, class: "field") do |form|%>
                                     <div class="field">
-                                        
-                                        <%= text_field_tag(:asking) %>
+                                        <h5> 
+                                        Quantity:
+                                        <%= form.text_field :quantity %>
+                                        Asking:
+                                        <%= form.text_field :asking, :value => ask %>
+                                        <%= hidden_field_tag :stock_code, hold[:stock_code] %>
+                                        <%= hidden_field_tag :users_id, hold[:owner_users_ID] %>
+                                        <%= hidden_field_tag :stock_id, hold[:id] %>
+                                        <%= form.submit "Split or Update Holding"%>
+                                        </h5>
                                     </div>
                                 <% end %>
                                 <h5> </h5>

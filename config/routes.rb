@@ -9,6 +9,11 @@ Rails.application.routes.draw do
   
   get 'change_asking', to: 'pages#change_asking', as: 'change_asking'
 
+  match '/holding', to: 'pages#holding', via: 'patch'
+  
+  patch 'holding/:id(.:format)', to: 'pages#holding', action: :update
+  put 'holding/:id(.:format)', to: 'pages#holding', action: :update
+
   devise_for :users
   root "pages#home"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
