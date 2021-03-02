@@ -10,29 +10,44 @@
     <main id="pages-my_holding">
 
         <h1>My holdings</h1>
+        <h2><%= @holding_message %></h2>
 
             <section class="holding-list">
+                <%cash = 0%>
                 <%@holding.each do |hold|%>
                     <%if current_user.id == hold[:owner_users_ID]%>
-                        <div class="card">
-                            <%if hold[:stock_code] == "AUD"%>
-                                <h5>$<%=hold[:quantity]%></h5>
-                            <%else%>                          
-                                <h5>stock: <%=hold[:stock_code]%></h5>
-                                <h5>quantity: <%=hold[:quantity]%></h5>
-                                <h5>asking: %<%=hold[:asking].to_f/10%></h5>
-                                <%= form_tag(change_asking_path) do %>
+                        <%if hold[:stock_code] == "AUD"%>
+                            <% cash = hold[:quantity]%>
+                        <%else%>
+                            <div class="card">   
+                                <%ask = hold[:asking].to_f/10%>
+                                <h5>Stock: <%=hold[:stock_code]%></h5>
+                                <h5>Quantity: <%=hold[:quantity]%></h5>
+                                <h5>Asking: %<%=ask%></h5>
+                                <%= form_for(hold, class: "field") do |form|%>
                                     <div class="field">
-                                        
-                                        <%= text_field_tag(:asking) %>
+                                        <h5> 
+                                        Quantity:
+                                        <%= form.text_field :quantity %>
+                                        Asking:
+                                        <%= form.text_field :asking, :value => ask %>
+                                        <%= hidden_field_tag :stock_code, hold[:stock_code] %>
+                                        <%= hidden_field_tag :users_id, hold[:owner_users_ID] %>
+                                        <%= hidden_field_tag :stock_id, hold[:id] %>
+                                        <%= form.submit "Split or Update Holding"%>
+                                        </h5>
                                     </div>
                                 <% end %>
                                 <h5> </h5>
-                            <%end%>
-                        </div>
+                            </div>                      
+                        <%end%>
+
                     <%end%>
                 <%end%>
-            </section>
+                <div class="card">
+                    <h5>$<%=cash%></h5>
+                </div>                 
+        </section>
 
     </main>
 

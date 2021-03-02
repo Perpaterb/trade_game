@@ -15,9 +15,14 @@ class PagesController < ApplicationController
   end
   
   def holding
-    @holding = Holding.all
+    if params[:commit] == "Split or Update Holding"
+      @holding_message = Holding.splitholding(params[:holding], params[:stock_id], params[:stock_code], params[:users_id])
+    end
+    Holding.combinesamesame(current_user.id)
+    Holding.removezerons(current_user.id)
+    @holding = Holding.all.order(:stock_code)
   end
-  
+
   def trade
     @users = User.all
     @holding = Holding.all.order(:asking)

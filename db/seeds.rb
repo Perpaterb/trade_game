@@ -22,6 +22,8 @@ Holding.create!([
     {owner_users_ID: 4, stock_code: "TLS", quantity: 100, asking: 30},
     {owner_users_ID: 2, stock_code: "SUN", quantity: 100, asking: -05},
     {owner_users_ID: 3, stock_code: "RIO", quantity: 100, asking: -03},
+    {owner_users_ID: 2, stock_code: "ANZ", quantity: 240, asking: 6},
+    {owner_users_ID: 2, stock_code: "ANZ", quantity: 202, asking: 6},
     {owner_users_ID: 4, stock_code: "AUD", quantity: 10000, asking: 0},
     {owner_users_ID: 2, stock_code: "AUD", quantity: 10000, asking: 0},
     {owner_users_ID: 3, stock_code: "AUD", quantity: 10000, asking: 0}
