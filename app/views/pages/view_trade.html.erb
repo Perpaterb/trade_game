@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+</style>
+</head>
+<body>
+
+    <main id="pages-view_trade">
+
+        <h1>View Trade</h1>
+
+            <section class="view_trade">
+                <div class="card">
+                    <h5>Stock: <%=@trad_details[:stock_code]%> Available: <%=@trad_details[:quantity]%></h5>
+                    <h5>Estimated price per unit: <%=@price_per_unit%></h5>
+                    <%=form_with url: "/purchase" do |purchase|%>
+                        <%=purchase.number_field :quantity, :value => @trad_details[:quantity].to_i%>
+                        <%=hidden_field_tag :trade_id, @trad_details[:id] %>
+                        <%=purchase.submit "Purchase"%>
+                    <%end%>
+                    <h5> </h5>
+                </div>
+            </section>
+
+    </main>
+
+</body>
+</html>

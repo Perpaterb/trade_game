@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
     before_action :configure_permitted_parameters, if: :devise_controller?
+
     
     def admin_only
         unless current_user.admin
@@ -7,6 +8,10 @@ class ApplicationController < ActionController::Base
         "You must be an admin to     perform that function!"
         end
     end
+
+    # def after_sign_in_path_for(resource)
+    #     User.new_user(current_user.id)
+    # end
     
     protected
   

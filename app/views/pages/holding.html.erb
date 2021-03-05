@@ -28,9 +28,9 @@
                                     <div class="field">
                                         <h5> 
                                         Quantity:
-                                        <%= form.text_field :quantity %>
+                                        <%= form.number_field :quantity %>
                                         Asking:
-                                        <%= form.text_field :asking, :value => ask %>
+                                        <%= form.number_field :asking, :value => ask %>
                                         <%= hidden_field_tag :stock_code, hold[:stock_code] %>
                                         <%= hidden_field_tag :users_id, hold[:owner_users_ID] %>
                                         <%= hidden_field_tag :stock_id, hold[:id] %>
