@@ -39,11 +39,6 @@ class Holding < ApplicationRecord
     end 
 
     def self.splitholding(holding_changes, stock_id, stock_code, users_id)
-        # if Holding.exists?(stock_id)
-        # else
-        #     return "Error: Stock ID not found"
-        #     break
-        # end
         if holding_changes[:asking].to_f < -5 or holding_changes[:asking].to_f > 5
             return "Error: Asking need to be between -5 and +5"
         elsif holding_changes[:quantity].to_i > Holding.find(stock_id)[:quantity]
@@ -96,7 +91,11 @@ class Holding < ApplicationRecord
                 Holding.where(:id => @selling_user_funds_id).update_all(:quantity => @selling_user_funds + final_cost)
                 Holding.where(:id => trade_id).update_all(:quantity => trade[:quantity] - quantity)
                 Holding.create!(owner_users_ID: purchasing_user_id, stock_code: trade[:stock_code], quantity: quantity, asking: 50)
+                
+                Transaction.create!(sold_user_id: @selling_user_id, buying_user_id: purchasing_user_id, stock_code: trade[:stock_code], quantity: quantity, price_per_share: realtime_stock_value)
+
                 return "Trade in compleated at a final cost of $#{final_cost}"
+
             else
                 return "Error: Avalible: $#{trade[:quantity]} --- Wanted: $#{quantity}"
             end
@@ -114,7 +113,7 @@ class Holding < ApplicationRecord
             lower = false
             per_ammount = (trade[:asking].to_f/10)
         end
-        stock_price = 10
+        stock_price = getlivestockprice(trade[:stock_code])
         if lower
             cost = stock_price-((per_ammount/100)*stock_price)
         else
@@ -122,6 +121,42 @@ class Holding < ApplicationRecord
         end
     
     end
+    
+    def self.getlivestockprice(stockcode)
+        @price_in_history = 0
+        HistoricalStockPrice.all.reverse().each do |stock|
+            if stock[:stockcode] == stockcode
+                if stock[:created_at] >= DateTime.now - 20.minutes
+                    @price = stock[:price]
+                    @price_in_history = 1
+                end
+            end
+        end 
+        if price_in_history = 0
+            url = "https://www.morningstar.com.au/Stocks/NewsAndQuotes/" + stockcode.to_s
+            require 'nokogiri'
+            require 'open-uri'
+                    doc = Nokogiri::HTML(URI.open(url))     
+            docdata = []
+            doc.xpath('//span', doc.collect_namespaces).each do |link|
+                docdata << link.content
+            end
+            @price = docdata[18].to_f
+            updatehistoricalstockprice(stockcode, @price)
+        end
+        return @price
+    end
 
+    def self.updatehistoricalstockprice(stockcode, price)
+        HistoricalStockPrice.create!(stockcode: stockcode, price: price)
+    end
 
+    def self.getuserstartingstockprises(user)
+        array = []
+        for i in 1..4
+            stock = user[("startingstock#{i}").to_sym]
+            array << getlivestockprice(stock)
+        end
+        return array
+    end 
 end

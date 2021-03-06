@@ -22,13 +22,8 @@ class StartCartItem < ApplicationRecord
     end
 
     def self.addstockstoholding(user_id)
-        valueisok = 0
-        StartCartItem.all.each do |item|
-            if item[:owner_users_id] == user_id
-                # test for up to date value and change var valueisok
-            end
-        end
-        if valueisok == 0
+        total = getcarttotal(user_id)
+        if total <= 10001
             StartCartItem.all.each do |item|
                 if item[:owner_users_id] == user_id
                     Holding.create!(owner_users_ID: user_id, stock_code: item[:stock_code], quantity: item[:quantity], asking: 50)
@@ -37,5 +32,17 @@ class StartCartItem < ApplicationRecord
             Holding.create!(owner_users_ID: user_id, stock_code: "AUD", quantity: 10000, asking: 0)
             User.where(:id => user_id).update_all(:signinstep => 2 ) 
         end
+    end
+
+    def self.getcarttotal(user_id)
+        @total = 0
+        StartCartItem.all.each do |item|
+            if item[:owner_users_id] == user_id
+                @total = @total + (item[:quantity] * Holding.getlivestockprice(item[:stock_code]))
+                p "!!!!! Cart = #{ @total}----- #{item[:quantity]} of #{Holding.getlivestockprice(item[:stock_code])}"
+            end
+        end
+        p "!!!!! Cart = #{ @total}-"
+        return @total
     end
 end

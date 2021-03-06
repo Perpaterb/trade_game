@@ -15,7 +15,7 @@
             <%for i in 1..4%>
                 <div class="card">
                     <h5>Stock: <%= @user[("startingstock#{i}").to_sym]%></h5>
-                    <h5>Stock price per unit: $</h5>
+                    <h5>Stock price per unit: $<%= @user_starting_stock_prises[i-1] %></h5>
                     <%=form_with do |form|%>
                         <div class="field">
                             <h5> 
@@ -32,15 +32,10 @@
         </section>
 
         <section class="cart-list">             
-            <%valueofcart = 0%>
-            <%@cartitems.each do |item|%>
-                <%if current_user.id == item[:owner_users_id]%>
-                    <% valueofcart += item[:quantity]%>
-                <%end%>   
-            <%end%>
+            <%@valueofcart = StartCartItem.getcarttotal(@user_id )%>
             <h5>Starting stocks shopping cart</h5>
-            <h5>Cart value: $<%=valueofcart%>     
-            <%if valueofcart > 9900 and valueofcart < 10001%>
+            <h5>Cart value: $<%=@valueofcart%>     
+            <%if @valueofcart > 9900 and @valueofcart < 10001%>
                 <%= form_with do |form|%>
                     <%= form.submit "Submit Cart" %>
                 <% end %>

@@ -18,7 +18,9 @@ class User < ApplicationRecord
 
   def self.new_user(user_id)
     for i in 1..4
-      User.where(:id => user_id).update_all((("startingstock#{i}").to_sym) => (@@stocklist.shuffle.first))
+      stock_id = @@stocklist.shuffle.first
+      User.where(:id => user_id).update_all((("startingstock#{i}").to_sym) => (stock_id))
+      Holding.getlivestockprice(stock_id)
     end 
   end
 

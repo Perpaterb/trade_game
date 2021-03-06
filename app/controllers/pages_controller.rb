@@ -27,6 +27,10 @@ class PagesController < ApplicationController
   end
   
   def stock_select
+    @user_id = current_user.id
+    @user = User.find(current_user.id)
+    @user_starting_stock_prises = Holding.getuserstartingstockprises(@user)
+    @valueofcart =StartCartItem.getcarttotal(current_user.id)
     if params[:commit] == "Add To Cart"
       StartCartItem.addtocart(current_user.id, params[:quantity].to_i, params[:stock_code])
     end
