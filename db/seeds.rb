@@ -39,6 +39,10 @@ Holding.create!([
   ])
 
   StartCartItem.create!([
-    {owner_users_id: 1, stock_code: "AGL", quantity: 100,},
-    {owner_users_id: 1, stock_code: "SUN", quantity: 50,},
+    {owner_users_id: 1, stock_code: "AGL", quantity: 100},
+    {owner_users_id: 1, stock_code: "SUN", quantity: 50}
+  ])
+
+  Leaderboard.create!([
+    {username: "timer", net_worth: 0.0}
   ])

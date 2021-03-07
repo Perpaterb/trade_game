@@ -33,5 +33,14 @@ class User < ApplicationRecord
     end
   end
   
+  def self.validusers
+    list = []
+    User.each do |user|
+      if user[:signinstep] == 2
+        list << user[:id]
+      end
+    end
+    return list
+  end
 end
  

@@ -125,10 +125,13 @@ class Holding < ApplicationRecord
     def self.getlivestockprice(stockcode)
         @price_in_history = 0
         HistoricalStockPrice.all.reverse().each do |stock|
-            if stock[:stockcode] == stockcode
-                if stock[:created_at] >= DateTime.now - 20.minutes
-                    @price = stock[:price]
-                    @price_in_history = 1
+            if @price_in_history == 0
+                if stock[:stockcode] == stockcode
+                    if stock[:created_at] >= DateTime.now - 130.minutes
+                        p "!!!!3 from history"
+                        @price = stock[:price]
+                        @price_in_history = 1
+                    end
                 end
             end
         end 
@@ -159,4 +162,5 @@ class Holding < ApplicationRecord
         end
         return array
     end 
+   
 end

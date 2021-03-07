@@ -22,8 +22,8 @@ class PagesController < ApplicationController
   end
 
   def leaderboard
-    @users = User.all
-    @holding = Holding.all
+    Leaderboard.updateLeaderboard(User.all, Holding.all)
+    @list = Leaderboard.all
   end
   
   def stock_select

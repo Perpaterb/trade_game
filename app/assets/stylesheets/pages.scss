@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
-#pages-admin, #pages-my_holding, #pages-trade, #pages-mytransactions, #pages-stock_select, #pages-trade_Purchase, #pages-view_trade {
+#pages-admin, #pages-my_holding, #pages-trade, #pages-mytransactions, #pages-stock_select, #pages-trade_Purchase, #pages-view_trade, #pages-leaderboard {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -38,6 +38,19 @@
         border: 1px solid black;
         border-radius: 10px;
         transition: box-shadow 0.3s;
+    }
+
+    .pos1{
+        border-top:#cfbc0d solid 5px;
+
+    }
+    .pos2{
+        border-top:#9e9e9d solid 5px;
+
+    }
+    .pos3{
+        border-top:#924201 solid 5px;
+
     }
 
     .true {
