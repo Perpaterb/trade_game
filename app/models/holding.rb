@@ -135,7 +135,7 @@ class Holding < ApplicationRecord
                 end
             end
         end 
-        if price_in_history = 0
+        if price_in_history == 0
             url = "https://www.morningstar.com.au/Stocks/NewsAndQuotes/" + stockcode.to_s
             require 'nokogiri'
             require 'open-uri'
