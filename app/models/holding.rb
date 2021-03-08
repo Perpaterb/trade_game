@@ -127,7 +127,7 @@ class Holding < ApplicationRecord
         HistoricalStockPrice.all.reverse().each do |stock|
             if @price_in_history == 0
                 if stock[:stockcode] == stockcode
-                    if stock[:created_at] >= DateTime.now - 130.minutes
+                    if stock[:created_at] >= DateTime.now - 30.minutes
                         p "!!!!3 from history"
                         @price = stock[:price]
                         @price_in_history = 1
