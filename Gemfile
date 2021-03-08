@@ -57,3 +57,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Adding devise for authentication 
 gem 'devise'
+
+# scrapping from axs stock price
+gem 'nokogiri'
+gem 'open-uri'

@@ -9,13 +9,22 @@
 
     <main id="pages-leaderboard">
 
-        <h1>leaderboard</h1>
+        <h1>Leaderboard </h1>
+        <h5>Refreshed Daily </h5>
+        <% timer = @list.find { |i| i[:username] == "timer"}  %>
+        <h5>Refreshed last at : <%= (timer[:created_at] + 11.hours).to_formatted_s(:short)  %></h5>
 
             <section class="user-list">
-                <%@users.each do |user|%>
-                    <div class="card <%=user[:admin]%>">
-                        <h5>username: <%=user[:username]%></h5>
-                    </div>
+                <%pos = 1 %>
+                <%@list.reverse().each do |user|%>
+                    <% if user[:username] != "timer"%>
+                        <% if user[:net_worth] > 0%>
+                            <div class="card pos<%=pos%>">
+                                <h5><%= pos %> - <%=user[:username]%> - $<%=user[:net_worth]%></h5>
+                            </div>
+                            <%pos = pos + 1 %>
+                        <% end%>
+                    <% end%>
                 <%end%>
             </section>
 

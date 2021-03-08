@@ -37,3 +37,12 @@ Holding.create!([
     {sold_user_id: 3, buying_user_id: 2, stock_code: "CBA", quantity: 100, price_per_share: 2400},
     {sold_user_id: 2, buying_user_id: 3, stock_code: "CBA", quantity: 100, price_per_share: 2400}
   ])
+
+  StartCartItem.create!([
+    {owner_users_id: 1, stock_code: "AGL", quantity: 100},
+    {owner_users_id: 1, stock_code: "SUN", quantity: 50}
+  ])
+
+  Leaderboard.create!([
+    {username: "timer", net_worth: 0.0}
+  ])

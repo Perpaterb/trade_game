@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+</style>
+</head>
+<body>
+
+    <main id="pages-trade_Purchase">
+
+        <h1>trade_Purchase</h1>
+
+            <section class="trade_Purchase">
+                <div class="card">
+                    <h5>Stock: <%=@trad_details[:stock_code]%></h5>
+                    <h5>Quantity: <%=params[:quantity]%></h5>
+                    <h5>Estimated price per unit: $<%=@price_per_unit%></h5>
+                    <h5>Estimated price total: $<%=(((@price_per_unit * params[:quantity].to_f) * 100).round)/100%></h5>
+                    <h5>Avalible funds: $<%= "#{@user_funds}" %></h5>
+                    <%=form_with url: "/confirm" do |confirm|%>
+                        <%=hidden_field_tag :quantity, params[:quantity] %>
+                        <%=hidden_field_tag :trade_id, @trad_details[:id] %>
+                        <%=confirm.submit "Confirm"%>
+                    <%end%>
+                    <h5> </h5>
+                </div>
+            </section>
+
+    </main>
+
+</body>
+</html>

@@ -16,7 +16,7 @@
                     <%if current_user.id != trade[:owner_users_ID]%>
                         <%if trade[:stock_code] != "AUD"%>
                             <div class="card n<%=trade[:asking].round(-1)%>">
-                                <h5>Seller: <%="#{@users.where(:id => trade[:owner_users_ID]).first.username}"%> Stock: <%=trade[:stock_code]%> Quantity: <%=trade[:quantity]%> </h5>
+                                <h5>Stock: <%=trade[:stock_code]%> Available: <%=trade[:quantity]%> </h5>
                                 <%if trade[:asking] > 0%>
                                     <h5>Asking for maket value +<%=trade[:asking].to_f/10%>%</h5>
                                 <%elsif trade[:asking] == 0%>
@@ -24,6 +24,11 @@
                                 <%else%>
                                     <h5>Asking for maket value <%=trade[:asking].to_f/10%>%</h5>
                                 <%end%>
+                                <%=form_with do |form|%>
+                                    <%= hidden_field_tag :trade_id, trade[:id] %>                                  
+                                    <%=form.submit "Open"%>
+                                <%end%>
+                                <h5> </h5>
                             </div>
                         <%end%>
                     <%end%>

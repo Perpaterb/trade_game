@@ -30,22 +30,15 @@ class Holding < ApplicationRecord
     
     def self.removezerons(users_id)
         Holding.all.each do |holdings|
-            if holdings[:owner_users_ID] == users_id
-                if holdings[:stock_code] != "AUD"
-                    if holdings[:quantity] <= 0
-                        Holding.destroy(holdings[:id])
-                    end
+            if holdings[:stock_code] != "AUD"
+                if holdings[:quantity] <= 0
+                    Holding.destroy(holdings[:id])
                 end
             end
         end
     end 
 
     def self.splitholding(holding_changes, stock_id, stock_code, users_id)
-        # if Holding.exists?(stock_id)
-        # else
-        #     return "Error: Stock ID not found"
-        #     break
-        # end
         if holding_changes[:asking].to_f < -5 or holding_changes[:asking].to_f > 5
             return "Error: Asking need to be between -5 and +5"
         elsif holding_changes[:quantity].to_i > Holding.find(stock_id)[:quantity]
@@ -58,4 +51,116 @@ class Holding < ApplicationRecord
         
     end
 
+    def self.useravaliblefunds(users_id)
+        Holding.all.each do |holdings|
+            if holdings[:owner_users_ID] == users_id
+                if holdings[:stock_code] == "AUD"
+                    return holdings[:quantity]
+                end
+            end
+        end
+    end
+
+    def self.tradeconfirmed(trade_id , purchasing_user_id, quantity)
+        quantity = quantity.to_f
+        trade = Holding.find(trade_id)
+        @selling_user_id = trade[:owner_users_ID]
+        Holding.all.each do |holdings|
+            if holdings[:owner_users_ID] == purchasing_user_id
+                if holdings[:stock_code] == "AUD"
+                    @purchasing_user_funds_id = holdings[:id]
+                    @purchasing_user_funds = holdings[:quantity]
+                end
+            end
+            if holdings[:owner_users_ID] == @selling_user_id
+                if holdings[:stock_code] == "AUD"
+                    @selling_user_funds_id = holdings[:id]
+                    @selling_user_funds = holdings[:quantity]
+                end
+            end
+        end
+        
+        #look up realtime cost
+        #realtime_stock_value = trade[:stock_code]
+        #final_cost = (realtime_stock_value * trade[:asking].to_f/10) * quantity
+        realtime_stock_value = priceperunitcalc(trade)
+        final_cost = (((realtime_stock_value * quantity) * 100).round)/100
+        if @purchasing_user_funds > final_cost
+            if trade[:quantity] >= quantity
+                Holding.where(:id => @purchasing_user_funds_id).update_all(:quantity => @purchasing_user_funds - final_cost)
+                Holding.where(:id => @selling_user_funds_id).update_all(:quantity => @selling_user_funds + final_cost)
+                Holding.where(:id => trade_id).update_all(:quantity => trade[:quantity] - quantity)
+                Holding.create!(owner_users_ID: purchasing_user_id, stock_code: trade[:stock_code], quantity: quantity, asking: 50)
+                
+                Transaction.create!(sold_user_id: @selling_user_id, buying_user_id: purchasing_user_id, stock_code: trade[:stock_code], quantity: quantity, price_per_share: realtime_stock_value)
+
+                return "Trade in compleated at a final cost of $#{final_cost}"
+
+            else
+                return "Error: Avalible: $#{trade[:quantity]} --- Wanted: $#{quantity}"
+            end
+        else
+            return "Error: Final cost of $#{final_cost} --- Avalible: $#{@purchasing_user_funds}"
+        end
+
+    end 
+
+    def self.priceperunitcalc(trade)
+        if trade[:asking] < 0            
+            lower = true
+            per_ammount = (trade[:asking].to_f/10)*-1
+        else
+            lower = false
+            per_ammount = (trade[:asking].to_f/10)
+        end
+        stock_price = getlivestockprice(trade[:stock_code])
+        if lower
+            cost = stock_price-((per_ammount/100)*stock_price)
+        else
+            cost = stock_price+((per_ammount/100)*stock_price)
+        end
+    
+    end
+    
+    def self.getlivestockprice(stockcode)
+        @price_in_history = 0
+        HistoricalStockPrice.all.reverse().each do |stock|
+            if @price_in_history == 0
+                if stock[:stockcode] == stockcode
+                    if stock[:created_at] >= DateTime.now - 30.minutes
+                        p "!!!!3 from history"
+                        @price = stock[:price]
+                        @price_in_history = 1
+                    end
+                end
+            end
+        end 
+        if price_in_history = 0
+            url = "https://www.morningstar.com.au/Stocks/NewsAndQuotes/" + stockcode.to_s
+            require 'nokogiri'
+            require 'open-uri'
+                    doc = Nokogiri::HTML(URI.open(url))     
+            docdata = []
+            doc.xpath('//span', doc.collect_namespaces).each do |link|
+                docdata << link.content
+            end
+            @price = docdata[18].to_f
+            updatehistoricalstockprice(stockcode, @price)
+        end
+        return @price
+    end
+
+    def self.updatehistoricalstockprice(stockcode, price)
+        HistoricalStockPrice.create!(stockcode: stockcode, price: price)
+    end
+
+    def self.getuserstartingstockprises(user)
+        array = []
+        for i in 1..4
+            stock = user[("startingstock#{i}").to_sym]
+            array << getlivestockprice(stock)
+        end
+        return array
+    end 
+   
 end

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+</style>
+</head>
+<body>
+
+    <main id="pages-stock_select">
+
+        <h1>Welcome to the game. Please sellect between $9,900 and $10,001 worth of starting stock</h1>
+
+        <section class="start-stock-list">                           
+            <%for i in 1..4%>
+                <div class="card">
+                    <h5>Stock: <%= @user[("startingstock#{i}").to_sym]%></h5>
+                    <h5>Stock price per unit: $<%= @user_starting_stock_prises[i-1] %></h5>
+                    <%=form_with do |form|%>
+                        <div class="field">
+                            <h5> 
+                            <%= form.label :quantity, "Quantity:" %>
+                            <%= form.number_field :quantity %>
+                            <%= form.hidden_field :stock_code, value: @user[("startingstock#{i}").to_sym]%>
+                            <%= form.submit "Add To Cart" %>
+                            </h5>
+                        </div>
+                    <% end %>
+                    <h5> </h5>
+                </div>
+            <% end %>
+        </section>
+
+        <section class="cart-list">             
+            <%@valueofcart = StartCartItem.getcarttotal(@user_id )%>
+            <h5>Starting stocks shopping cart</h5>
+            <h5>Cart value: $<%=@valueofcart%>     
+            <%if @valueofcart > 9900 and @valueofcart < 10001%>
+                <%= form_with do |form|%>
+                    <%= form.submit "Submit Cart" %>
+                <% end %>
+            <%end%>
+            </h5>
+            <%@cartitems.each do |item|%>
+                <%if current_user.id == item[:owner_users_id]%>
+                    <div class="card">   
+                        <h5>Stock: <%=item[:stock_code]%></h5>
+                        <h5>Quantity: <%=item[:quantity]%></h5>
+                        <%= form_with do |form|%>
+                            <div class="field">
+                                <h5> 
+                                <%= hidden_field_tag :cart_id, item[:id] %>
+                                <%= form.submit "Remove from cart"%>
+                                </h5>
+                            </div>
+                        <% end %>
+                        <h5> </h5>
+                    </div>
+                <%end%>
+            <%end%>
+        </section>
+    </main>
+</body>
+</html>
