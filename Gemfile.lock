@@ -65,6 +65,7 @@ GEM
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
     bcrypt (3.1.16)
+    bcrypt_pbkdf (1.1.0)
     bindex (0.8.1)
     bootsnap (1.7.2)
       msgpack (~> 1.0)
@@ -103,6 +104,7 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    ed25519 (1.2.4)
     erubi (1.10.0)
     ffi (1.14.2)
     globalid (0.4.2)
@@ -247,6 +249,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  bcrypt_pbkdf
   bootsnap (>= 1.4.4)
   byebug
   capistrano (~> 3.11)
@@ -255,6 +258,7 @@ DEPENDENCIES
   capistrano-rbenv (~> 2.1, >= 2.1.4)
   capybara (>= 3.26)
   devise
+  ed25519
   jbuilder (~> 2.7)
   listen (~> 3.3)
   nokogiri
