@@ -82,5 +82,5 @@ test:
 production:
   <<: *default
   database: trade_game_production
-  username: trade_game
+  username: andrew
   password: <%= ENV['TRADE_GAME_DATABASE_PASSWORD'] %>
