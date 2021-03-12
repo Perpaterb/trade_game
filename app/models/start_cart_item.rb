@@ -41,12 +41,13 @@ class StartCartItem < ApplicationRecord
     def self.getcarttotal(user_id)
         @total = 0
         StartCartItem.all.each do |item|
+            p "!!!! owner id =#{item[:owner_users_id]}   --   user_id = #{user_id}"
             if item[:owner_users_id] == user_id
                 @total = @total + (item[:quantity] * Holding.getlivestockprice(item[:stock_code]))
-                p "!!!!! Cart = #{ @total}----- #{item[:quantity]} of #{Holding.getlivestockprice(item[:stock_code])}"
+                p "!!!!! add in #{item[:quantity]} of #{Holding.getlivestockprice(item[:stock_code])} -- to cart"
             end
         end
-        p "!!!!! Cart = #{ @total}-"
+        p "!!!!! Cart total = #{ @total}"
         return @total
     end
 end

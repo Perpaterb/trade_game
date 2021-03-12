@@ -42,6 +42,7 @@ class PagesController < ApplicationController
   # send the user by current_user.id
   def stock_select
     @user = User.find(current_user.id)
+    @user_id = current_user.id
 
     #gett all the live prises for all the users starting stocks
     @user_starting_stock_prises = Holding.getuserstartingstockprises(@user)

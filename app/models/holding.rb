@@ -130,7 +130,7 @@ class Holding < ApplicationRecord
             if @price_in_history == 0
                 if stock[:stockcode] == stockcode
                     if stock[:created_at] >= DateTime.now - 30.minutes
-                        p "!!!!3 from history"
+                        p "!!!! getting price from history"
                         @price = stock[:price]
                         @price_in_history = 1
                     end
@@ -138,6 +138,7 @@ class Holding < ApplicationRecord
             end
         end 
         if @price_in_history == 0
+            p "!!!! getting price from morningstar.com.au"
             url = "https://www.morningstar.com.au/Stocks/NewsAndQuotes/" + stockcode.to_s
             require 'nokogiri'
             require 'open-uri'
@@ -149,6 +150,7 @@ class Holding < ApplicationRecord
             @price = docdata[18].to_f
             updatehistoricalstockprice(stockcode, @price)
         end
+        p "!!!! price is #{@price}"
         return @price
     end
 

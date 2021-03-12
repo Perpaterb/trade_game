@@ -32,7 +32,7 @@
         </section>
 
         <section class="cart-list">             
-            <%@valueofcart = StartCartItem.getcarttotal(@user_id )%>
+            <%@valueofcart = StartCartItem.getcarttotal(@user_id)%>
             <h5>Starting stocks shopping cart</h5>
             <h5>Cart value: $<%=@valueofcart%>     
             <%if @valueofcart > 9900 and @valueofcart < 10001%>
