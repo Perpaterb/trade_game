@@ -71,5 +71,5 @@ gem 'capistrano-rbenv', '~> 2.1', '>= 2.1.4'
 gem 'ed25519'
 gem 'bcrypt_pbkdf'
 
-#Avitar resizing
-gem "mini_magick"
+#Avitar icon resizing
+gem 'image_processing'
