@@ -3,6 +3,7 @@ class Leaderboard < ApplicationRecord
     #A users is wanting to look at the leaderboard.
     #if it has been more then 24 hr since update then update it with live prises
     def self.updateLeaderboard(users, holding) #needs beter name like user requesting leaderboard
+        p "#{Time.new} !!!!! uses ask for Leaderboard"
         uptodate = 0 
         timer = Leaderboard.where(:username => "timer").first
         if timer[:net_worth] == 1
@@ -20,11 +21,13 @@ class Leaderboard < ApplicationRecord
 
     #An admin has requested an update of the leaderboard (skip 24hr)
     def self.adminupdateLeaderboard(users, holding)
+        p "#{Time.new} !!!!! admin update Leaderboard"
         updatetheLeaderboard(users, holding)
     end
 
-    #update Leaderboard BD with live prises. 
-    def updatetheLeaderboard(users, holding)
+    #update Leaderboard BD with live prices. 
+    def self.updatetheLeaderboard(users, holding)
+        p "#{Time.new} !!!!! update Leaderboard BD with live prices."
         Leaderboard.destroy_all
         Leaderboard.create!(username: "timer", net_worth: 0.0)
         users.each do |user|
