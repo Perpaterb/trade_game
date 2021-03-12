@@ -1,5 +1,6 @@
 class StartCartItem < ApplicationRecord
 
+    #Add an item to the cart
     def self.addtocart(user_id, quantity, stock_code)
         skip = 0
         if quantity > 0
@@ -17,10 +18,12 @@ class StartCartItem < ApplicationRecord
         end 
     end
 
+    #remove an item from the cart
     def self.removefromcart(cart_id)
         StartCartItem.destroy(cart_id)
     end
 
+    #add the cart to a uses holdings if the cost is bellow 10,001
     def self.addstockstoholding(user_id)
         total = getcarttotal(user_id)
         if total <= 10001
@@ -34,6 +37,7 @@ class StartCartItem < ApplicationRecord
         end
     end
 
+    #get the total cost of the cart
     def self.getcarttotal(user_id)
         @total = 0
         StartCartItem.all.each do |item|

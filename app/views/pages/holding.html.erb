@@ -30,7 +30,7 @@
                                         Quantity:
                                         <%= form.number_field :quantity %>
                                         Asking:
-                                        <%= form.number_field :asking, :value => ask %>
+                                        <%= form.number_field :asking, :value => ask, step: 0.1 %>
                                         <%= hidden_field_tag :stock_code, hold[:stock_code] %>
                                         <%= hidden_field_tag :users_id, hold[:owner_users_ID] %>
                                         <%= hidden_field_tag :stock_id, hold[:id] %>

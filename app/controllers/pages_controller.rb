@@ -3,6 +3,8 @@ class PagesController < ApplicationController
   before_action :usernewtests , only:[:admin, :holding, :trade, :mytransactions]
   before_action :admin_only , only:[:admin]
 
+
+  # testing to see if a user is new before directing letting them go to :admin, :holding, :trade, :mytransactions
   def usernewtests
     @new_user = User.testuserisnew(current_user.id)
     if @new_user == true
@@ -14,90 +16,141 @@ class PagesController < ApplicationController
     end 
   end 
 
+  #home page
   def home
   end
 
+  #Admin page sending all users.
   def admin
     @users = User.all
+
+    #if an admin has clicked the "Reset leaderboard" button
+    if params[:commit] == "Reset leaderboard"
+      Leaderboard.adminupdateLeaderboard(@users, Holding.all)
+    end 
   end
 
+  # leaderboard page start by updateing the leaderboard if it has been more then 24hrs
+  # then send the leaderboard and all users for avatar.
   def leaderboard
     Leaderboard.updateLeaderboard(User.all, Holding.all)
     @list = Leaderboard.all
+    @users = User.all
   end
   
+  # the shopping cart for the new users sellecting thier starting stocks
+  # send the user by current_user.id
   def stock_select
-    @user_id = current_user.id
     @user = User.find(current_user.id)
+
+    #gett all the live prises for all the users starting stocks
     @user_starting_stock_prises = Holding.getuserstartingstockprises(@user)
+
+    #update cart total value
     @valueofcart =StartCartItem.getcarttotal(current_user.id)
+
+    #adding a stock to the cart
     if params[:commit] == "Add To Cart"
       StartCartItem.addtocart(current_user.id, params[:quantity].to_i, params[:stock_code])
     end
+
+    #remove a stock from the cart
     if params[:commit] == "Remove from cart"
       StartCartItem.removefromcart(params[:cart_id])
     end
+
+    #submit the cart and redirect to hording page
     if params[:commit] == "Submit Cart"
       StartCartItem.addstockstoholding(current_user.id)
       redirect_to holding_path
     end
-    @user = User.find(current_user.id)
+
+    #send all crat items
     @cartitems = StartCartItem.all
   end
 
+  #Holding page
   def holding
+
+    #Split or Update a Holding with an ammount and asking price
     if params[:commit] == "Split or Update Holding"
       @holding_message = Holding.splitholding(params[:holding], params[:stock_id], params[:stock_code], params[:users_id])
     end
+
+    #combine all a users holdings of the same stock and asking
     Holding.combinesamesame(current_user.id)
+
+    #remove all holdings with 0 quantity 
     Holding.removezerons(current_user.id)
+
+    #sending all hooldings in alfabet order View will pull out users.
     @holding = Holding.all.order(:stock_code)
   end
 
+  #trade page
   def trade
+
+    #remove all holdings with 0 quantity
     Holding.removezerons(current_user.id)
+
+    # Send all users and holdings in order
     @users = User.all
     @holding = Holding.all.order(:asking)
   end
 
+  #user has looked on a trade
   def view_trade
+
+    # might not need this if 
     if params[:commit] == "Open"
+
+      #send the holding
       @trad_details = Holding.find(params[:trade_id])
+
+      #send the live stock price per unit
       @price_per_unit = Holding.priceperunitcalc(@trad_details)
     end
   end 
 
+  #user has has ented quantity to perchase and clicked Purchase.
   def purchase
+
+    # might not need this if 
     if params[:commit] == "Purchase"
+
+      #send the holding
       @trad_details = Holding.find(params[:trade_id])
+
+      #send the live stock price per unit
       @price_per_unit = Holding.priceperunitcalc(@trad_details)
+
+      #send the users avalible funds in AUD 
       @user_funds = Holding.useravaliblefunds(current_user.id)
     end
   end
 
+  #user has clicked "confirm" on the deatails of the perchase they want to make.
   def trade_confirm
+
+    # might not need this if 
     if params[:commit] == "Confirm"
+
+      #send the holding
       @trad_details = Holding.find(params[:trade_id])
+
+      #send the live stock price per unit adain. last time
       @price_per_unit = Holding.priceperunitcalc(@trad_details)
+
+      # finalise and send massage to user 
       @message = Holding.tradeconfirmed(params[:trade_id], current_user.id, params[:quantity])
     end
   end
 
 
+  #my transactions page sending all users and all transactions.
   def mytransactions
     @users = User.all
     @transactions = Transaction.all
   end
-  
-
-
-  def admin_destroy_user
-    #if params[:id] != @@loggedin_user_id
-        @user = User.find(params[:id])
-        @user.destroy
-        redirect_to admin_path
-    #end
-  end
-
-  
+   
 end

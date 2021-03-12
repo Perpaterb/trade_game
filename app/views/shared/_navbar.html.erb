@@ -1,6 +1,7 @@
 <nav class="topnav">
     <% if user_signed_in? %>
         <a> <%= "Logged in as: #{current_user.username}" %></a>
+        <%= user_avatar(current_user, 40)%>
         <a> <%= link_to "Leaderboard", leaderboard_path %></a>
         <a> <%= link_to "My Holding", holding_path %></a>
         <a> <%= link_to "My Transactions", mytransactions_path %></a>
@@ -9,6 +10,7 @@
             <a> <%= link_to "Admin", admin_path %></a>
         <% end%>
         <a> <%= link_to "Sign out", destroy_user_session_path, method: "delete" %></a>
+        <a> <%= link_to "Edit Profile", edit_user_registration_path %></a>
     <% else %>
         <a> <%= link_to "Login", new_user_session_path %></a>
         <a> <%= link_to "Sign up", new_user_registration_path %></a>
