@@ -16,11 +16,11 @@
 
             <section class="user-list">
                 <%pos = 1 %>
-                <%@list.reverse().each do |user|%>
+                <%@list.each do |user|%>
                     <% if user[:username] != "timer"%>
                         <% if user[:net_worth] > 0%>
                             <div class="card pos<%=pos%>">
-                                <h5><%= pos %> - <%=user[:username]%> - $<%=user[:net_worth]%></h5>
+                                <h5><%= pos %> - <%= user_avatar(@users.where(:username => user[:username]).first, 40)%> <%=user[:username]%> - $<%=user[:net_worth]%></h5>
                             </div>
                             <%pos = pos + 1 %>
                         <% end%>

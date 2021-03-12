@@ -4,6 +4,18 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
+    <div class="row">
+      <div class="col-sm-4">
+      
+        <%= user_avatar(resource, 100) %>  
+      </div>
+      <div class="col-sm-8">
+        <%= f.file_field :avatar, accept:'image/*' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   </div>
