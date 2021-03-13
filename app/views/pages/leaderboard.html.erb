@@ -11,16 +11,17 @@
 
         <h1>Leaderboard </h1>
         <h5>Refreshed Daily </h5>
-        <% timer = @list.find { |i| i[:username] == "timer"}  %>
+        <% timer = @list.find { |i| i[:user_id] == -1}  %>
         <h5>Refreshed last at : <%= (timer[:created_at] + 11.hours).to_formatted_s(:short)  %></h5>
 
             <section class="user-list">
                 <%pos = 1 %>
-                <%@list.each do |user|%>
-                    <% if user[:username] != "timer"%>
-                        <% if user[:net_worth] > 0%>
+                <%@list.each do |listing|%>
+                    <% if listing[:user_id] != -1%>
+                        <% if listing[:net_worth] > 0%>
                             <div class="card pos<%=pos%>">
-                                <h5><%= pos %> - <%= user_avatar(@users.where(:username => user[:username]).first, 40)%> <%=user[:username]%> - $<%=user[:net_worth]%></h5>
+                                <% user = @users.where(:id => listing[:user_id]).first%>
+                                <h5><%= pos %> - <%= user_avatar(user,40)%> <%=user[:username]%> - $<%=listing[:net_worth]%></h5>
                             </div>
                             <%pos = pos + 1 %>
                         <% end%>

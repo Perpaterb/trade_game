@@ -45,5 +45,5 @@ User.create!([
 #   ])
 
   Leaderboard.create!([
-    {username: "timer", net_worth: 1}
+    {user_id: -1, net_worth: 1}
   ])
