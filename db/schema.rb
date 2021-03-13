@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_114623) do
   end
 
   create_table "leaderboards", force: :cascade do |t|
-    t.string "username", null: false
+    t.integer "user_id", null: false
     t.float "net_worth", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

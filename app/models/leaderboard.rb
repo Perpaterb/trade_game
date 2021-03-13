@@ -5,7 +5,7 @@ class Leaderboard < ApplicationRecord
     def self.updateLeaderboard(users, holding) #needs beter name like user requesting leaderboard
         p "#{Time.new} !!!!! uses ask for Leaderboard"
         uptodate = 0 
-        timer = Leaderboard.where(:username => "timer").first
+        timer = Leaderboard.where(:user_id => -1).first
         if timer[:net_worth] == 1
             uptodate = 0
         else
@@ -29,7 +29,7 @@ class Leaderboard < ApplicationRecord
     def self.updatetheLeaderboard(users, holding)
         p "#{Time.new} !!!!! update Leaderboard BD with live prices."
         Leaderboard.destroy_all
-        Leaderboard.create!(username: "timer", net_worth: 0.0)
+        Leaderboard.create!(user_id: -1, net_worth: 0.0)
         users.each do |user|
             @value = 0
             if user[:signinstep] == 2
@@ -46,7 +46,7 @@ class Leaderboard < ApplicationRecord
                     end
                 end
             end
-            Leaderboard.create!(username: user[:username], net_worth: @value.round(2))
+            Leaderboard.create!(user_id: user[:id], net_worth: @value.round(2))
         end
     end
 end
