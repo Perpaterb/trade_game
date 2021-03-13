@@ -73,3 +73,7 @@ gem 'bcrypt_pbkdf'
 
 #Avitar icon resizing
 gem 'image_processing'
+
+# Cloudinary
+gem 'cloudinary'
+gem 'activestorage-cloudinary-service'
