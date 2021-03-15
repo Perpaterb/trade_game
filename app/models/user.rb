@@ -28,6 +28,7 @@ class User < ApplicationRecord
 
   # test if users has starting stocks
   def self.testuserisnew(user_id)
+    #Quary User table in DB to see if users has starting stock data already 
     if User.where(:id => user_id).pluck(:startingstock1).first == nil
       p "!!!!!!! Users has NO start stocks"
       return true
@@ -41,13 +42,16 @@ class User < ApplicationRecord
   def self.new_user(user_id)
     for i in 1..4
       stock_id = @@stocklist.shuffle.first
+      #Quary User table in DB to get the stock code for each starting stock 
       User.where(:id => user_id).update_all((("startingstock#{i}").to_sym) => (stock_id))
+      #ask Holding model for current stock price 
       Holding.getlivestockprice(stock_id)
     end 
   end
 
   # Test if users has compleated sign in step (eg picking 10k stocks)
   def self.testusersigninsteps2(user_id)
+    #Quary User table in DB see if users has compleated all sgin in steps
     if User.where(:id => user_id).pluck(:signinstep).first == 1
       p "!!!!! User has not compleated setup"
       return true
@@ -59,6 +63,7 @@ class User < ApplicationRecord
   #return list of users that have compleated sign in steps
   def self.validusers
     list = []
+    #Quary User table in DB to get all users that have compleated all sgin in steps
     User.each do |user|
       if user[:signinstep] == 2
         list << user[:id]

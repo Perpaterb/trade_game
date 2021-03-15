@@ -8,6 +8,7 @@ class PagesController < ApplicationController
   def usernewtests
     @new_user = User.testuserisnew(current_user.id)
     if @new_user == true
+      #Quary User table in DB get current_user
       User.new_user(current_user.id)
     end
     @userSetupNotDone = User.testusersigninsteps2(current_user.id)
@@ -22,10 +23,12 @@ class PagesController < ApplicationController
 
   #Admin page sending all users.
   def admin
+    #Quary User table in DB get all
     @users = User.all
 
     #if an admin has clicked the "Reset leaderboard" button
     if params[:commit] == "Reset leaderboard"
+      #Quary Holding table in DB get all and send to Leaderboard model
       Leaderboard.adminupdateLeaderboard(@users, Holding.all)
     end 
   end
@@ -33,14 +36,19 @@ class PagesController < ApplicationController
   # leaderboard page start by updateing the leaderboard if it has been more then 24hrs
   # then send the leaderboard and all users for avatar.
   def leaderboard
-    Leaderboard.updateLeaderboard(User.all, Holding.all)
-    @list = Leaderboard.all
+    #Quary User table in DB get all
     @users = User.all
+    #Quary Holding table in DB get all and send to Leaderboard model
+    Leaderboard.updateLeaderboard(@users, Holding.all)
+    #Quary Leaderboard table in DB get all
+    @list = Leaderboard.all
+    
   end
   
   # the shopping cart for the new users sellecting thier starting stocks
   # send the user by current_user.id
   def stock_select
+    #Quary User table in DB get current_user
     @user = User.find(current_user.id)
     @user_id = current_user.id
 
@@ -67,6 +75,7 @@ class PagesController < ApplicationController
     end
 
     #send all crat items
+    #Quary StartCartItem table in DB get all
     @cartitems = StartCartItem.all
   end
 
@@ -85,6 +94,7 @@ class PagesController < ApplicationController
     Holding.removezerons(current_user.id)
 
     #sending all hooldings in alfabet order View will pull out users.
+    #Quary Holding table in DB get all in order
     @holding = Holding.all.order(:stock_code)
   end
 
@@ -95,7 +105,9 @@ class PagesController < ApplicationController
     Holding.removezerons(current_user.id)
 
     # Send all users and holdings in order
+    #Quary User table in DB get all
     @users = User.all
+    #Quary Holding table in DB get all in order
     @holding = Holding.all.order(:asking)
   end
 
@@ -106,6 +118,7 @@ class PagesController < ApplicationController
     if params[:commit] == "Open"
 
       #send the holding
+      #Quary Holding table in DB find by trade id
       @trad_details = Holding.find(params[:trade_id])
 
       #send the live stock price per unit
@@ -120,6 +133,7 @@ class PagesController < ApplicationController
     if params[:commit] == "Purchase"
 
       #send the holding
+      #Quary Holding table in DB find by trade id
       @trad_details = Holding.find(params[:trade_id])
 
       #send the live stock price per unit
@@ -137,6 +151,7 @@ class PagesController < ApplicationController
     if params[:commit] == "Confirm"
 
       #send the holding
+      #Quary Holding table in DB find by trade id
       @trad_details = Holding.find(params[:trade_id])
 
       #send the live stock price per unit adain. last time
@@ -150,7 +165,9 @@ class PagesController < ApplicationController
 
   #my transactions page sending all users and all transactions.
   def mytransactions
+    #Quary User table in DB get all
     @users = User.all
+    #Quary Transaction table in DB get all
     @transactions = Transaction.all
   end
    
